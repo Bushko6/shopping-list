@@ -1,0 +1,31 @@
+{
+  "name": "shopping-list-architecture",
+  "version": "1.0.0",
+  "description": "Node.js shopping list application with layered architecture, GoF patterns, in-memory persistence, tests, reports, and CI.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint src tests",
+    "build": "node --check src/index.js"
+  },
+  "keywords": [
+    "shopping-list",
+    "architecture",
+    "solid",
+    "patterns",
+    "vitest",
+    "sonarqube"
+  ],
+  "author": "Maksim Denderis",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "eslint": "^9.29.0",
+    "vitest": "^4.1.8"
+  }
+}

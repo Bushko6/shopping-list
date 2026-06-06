@@ -1,0 +1,36 @@
+classDiagram
+  class ShoppingListService {
+    createList()
+    addItem()
+    markPurchased()
+    markPending()
+    removeItem()
+    getListSummary()
+  }
+
+  class EventBus {
+    subscribe()
+    publish()
+  }
+
+  class ShoppingSortContext {
+    setStrategy()
+    sort()
+  }
+
+  class ByPriorityStrategy
+  class ByCategoryStrategy
+  class ByStatusStrategy
+  class ShoppingListRepository
+  class ShoppingItemRepository
+  class InMemoryRepository
+
+  ShoppingListService --> EventBus
+  ShoppingListService --> ShoppingSortContext
+  ShoppingListService --> ShoppingListRepository
+  ShoppingListService --> ShoppingItemRepository
+  ShoppingListRepository --|> InMemoryRepository
+  ShoppingItemRepository --|> InMemoryRepository
+  ShoppingSortContext --> ByPriorityStrategy
+  ShoppingSortContext --> ByCategoryStrategy
+  ShoppingSortContext --> ByStatusStrategy

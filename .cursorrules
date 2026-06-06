@@ -1,0 +1,9 @@
+Project rules for autonomous AI agents:
+
+1. Generate code only behind explicit contracts: services depend on repository-like objects, not concrete storage.
+2. Keep storage in memory only. Do not add external databases, queues, cloud APIs, or network calls.
+3. Use TDD for changes: every new branch of business logic needs unit or integration tests.
+4. Preserve layered architecture: models contain state rules, services coordinate use cases, storage persists in memory.
+5. Keep GoF patterns visible and purposeful. Current patterns are Strategy and Observer.
+6. Do not bypass validation in models.
+7. Maintain coverage at 70% or higher and keep SonarQube Quality Gate green.

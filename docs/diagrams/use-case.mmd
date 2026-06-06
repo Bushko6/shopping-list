@@ -1,0 +1,21 @@
+flowchart LR
+  Customer[Customer]
+  Helper[Store helper]
+  QA[QA/Developer]
+  Create((Create list))
+  Rename((Rename list))
+  Add((Add item))
+  Purchase((Mark purchased))
+  Pending((Mark pending))
+  Remove((Remove item))
+  Archive((Archive list))
+  Reports((Run tests and reports))
+
+  Customer --> Create
+  Customer --> Rename
+  Customer --> Add
+  Customer --> Archive
+  Helper --> Purchase
+  Helper --> Pending
+  Helper --> Remove
+  QA --> Reports

@@ -1,0 +1,33 @@
+classDiagram
+  class ShoppingList {
+    id
+    title
+    owner
+    archived
+    itemIds
+    addItem()
+    removeItem()
+    archive()
+  }
+
+  class ShoppingItem {
+    id
+    name
+    quantity
+    unit
+    category
+    priority
+    price
+    status
+    markPurchased()
+    markPending()
+    subtotal()
+  }
+
+  class PurchaseStatus {
+    PENDING
+    PURCHASED
+  }
+
+  ShoppingList "1" --> "*" ShoppingItem
+  ShoppingItem --> PurchaseStatus

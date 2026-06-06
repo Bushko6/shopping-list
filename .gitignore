@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+reports/
+.env
+.DS_Store
+npm-debug.log*
+
+# IDE and local environment files
+.idea/
+*.iml
+.vscode/
+.venv/
