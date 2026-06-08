@@ -14,7 +14,7 @@ export function createShoppingApplication() {
   return { service, unitOfWork, eventBus };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+export function runExampleApplication() {
   const { service, eventBus } = createShoppingApplication();
   eventBus.subscribe(ShoppingEvents.ITEM_PURCHASED, ({ item }) => {
     console.log(`Purchased: ${item.name}`);
@@ -25,4 +25,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   service.addItem(weekend.id, { name: 'Bread', quantity: 1, unit: 'loaf', price: 1.2, priority: 1 });
   service.markPurchased(weekend.id, milk.id);
   console.log(JSON.stringify(service.getListSummary(weekend.id), null, 2));
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  runExampleApplication();
 }
