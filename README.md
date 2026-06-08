@@ -1,7 +1,7 @@
 # Shopping List Architecture
 
-[![CI Pipeline](https://github.com/SEGTSW/yev-asd/actions/workflows/ci-pipeline.yml/badge.svg)](https://github.com/SEGTSW/yev-asd/actions/workflows/ci-pipeline.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SEGTSW_yev-asd&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SEGTSW_yev-asd)
+[![CI Pipeline](https://github.com/Bushko6/shopping-list/actions/workflows/ci-pipeline.yml/badge.svg)](https://github.com/Bushko6/shopping-list/actions/workflows/ci-pipeline.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Bushko6_shopping-list&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Bushko6_shopping-list)
 
 Node.js застосунок для створення та керування списками покупок. Проєкт побудований під вимоги курсу з архітектури: шари, GoF патерни, SOLID, in-memory persistence, 200+ тестів, звіти покриття, CI/CD і SonarQube.
 
@@ -59,7 +59,9 @@ GitHub Actions pipeline виконує:
 5. SonarQube scan.
 6. Завантаження `reports/` і `coverage/` як artifacts.
 
-Для SonarCloud потрібно додати repository secret `SONAR_TOKEN` і налаштувати project key `SEGTSW_yev-asd`.
+Для SonarCloud потрібно додати repository secret `SONAR_TOKEN`, налаштувати `sonar.organization=Bushko6` і перевірити project key `Bushko6_shopping-list`.
+
+> У GitHub Actions pipeline додано перевірку, яка не дозволяє пройти CI без `SONAR_TOKEN`. Це гарантує, що зелена галочка означає виконання Sonar-скану.
 
 > У репозиторії налаштовано перевірку, яка не дозволить pipeline успішно пройти без `SONAR_TOKEN`. Це гарантує, що зелена галочка означатиме виконання Sonar скану.
 
