@@ -28,7 +28,7 @@
       <button type="submit">Створити</button>
     </form>
 
-    <script>
+    <script type="module">
       async function fetchLists() {
         const res = await fetch('/api/lists');
         const lists = await res.json();
@@ -66,11 +66,11 @@
 
       function escapeHtml(str) {
         return String(str)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/\"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
       }
 
       async function loadListItems(listId) {
@@ -110,10 +110,10 @@
         await fetch('/api/lists', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title, owner }) });
         document.getElementById('title').value = '';
         document.getElementById('owner').value = '';
-        fetchLists();
+        await fetchLists();
       });
 
-      fetchLists();
+      await fetchLists();
     </script>
   </body>
 </html>
