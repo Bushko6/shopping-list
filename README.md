@@ -56,7 +56,7 @@ GitHub Actions pipeline виконує:
 2. Build check.
 3. ESLint.
 4. Тести та coverage reports.
-5. SonarQube scan.
+5. SonarCloud scan.
 6. Завантаження `reports/` і `coverage/` як artifacts.
 
 Для SonarCloud потрібно додати repository secret `SONAR_TOKEN`, налаштувати `sonar.organization=Bushko6` і перевірити project key `Bushko6_shopping-list`.

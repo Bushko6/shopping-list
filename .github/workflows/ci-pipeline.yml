@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: https://sonarcloud.io
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,11 +39,12 @@ jobs:
           echo "SONAR_TOKEN is not configured. Set the repository secret SONAR_TOKEN in GitHub."
           exit 1
 
-      - name: SonarQube scan
-        uses: SonarSource/sonarqube-scan-action@2f77a1ec69fb1d595b06f35ab27e97605bdef703
-        env:
-          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+      - name: SonarCloud scan
+        uses: SonarSource/sonarcloud-github-action@91d2f4f7d0a65fdca8e7cd9f7a08efe62dd67e77
+        with:
+          organization: "Bushko6"
+          token: ${{ secrets.SONAR_TOKEN }}
+          projectKey: "Bushko6_shopping-list"
 
       - name: Upload test and coverage artifacts
         uses: actions/upload-artifact@v4
