@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Список покупок</title>
+    <style>
+      body { font-family: Arial, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+      h1 { text-align: center; }
+      .list { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; border-radius: 6px; }
+      .item { display:flex; justify-content:space-between; padding: 0.25rem 0; gap:12px; align-items:center }
+      .item.purchased { text-decoration: line-through; color: #888; }
+      form { margin: 1rem 0; display:flex; gap:8px; flex-wrap:wrap }
+      input[type=text], input[type=number] { padding: 6px; }
+      button { padding:6px 10px; }
+      .meta { color:#555; font-size:0.9rem }
+    </style>
+  </head>
+  <body>
+    <h1>Список покупок</h1>
+    <p class="meta">Локальний веб-інтерфейс до сервісу списків покупок.</p>
+    <div id="lists"></div>
+
+    <h2>Створити новий список</h2>
+    <form id="createList">
+      <input type="text" id="title" placeholder="Назва списку" required />
+      <input type="text" id="owner" placeholder="Власник" required />
+      <button type="submit">Створити</button>
+    </form>
+
+    <script>
+      async function fetchLists() {
+        const res = await fetch('/api/lists');
+        const lists = await res.json();
+        const container = document.getElementById('lists');
+        container.innerHTML = '';
+        for (const l of lists) {
+          const div = document.createElement('div');
+          div.className = 'list';
+          div.innerHTML = `<strong>${escapeHtml(l.title)}</strong> — власник: ${escapeHtml(l.owner)} — id: ${l.id}
+            <div id="items-${l.id}"></div>
+            <div style="margin-top:8px; font-size:0.9rem; color:#444">Загалом: <span id="total-${l.id}">0.00</span> $ — Прогрес: <span id="progress-${l.id}">0</span></div>
+            <form data-id="${l.id}" class="addItem" style="margin-top:8px">
+              <input name="name" placeholder="Назва товару" required />
+              <input name="quantity" type="number" value="1" min="1" style="width:70px" />
+              <input name="price" type="number" value="0" step="0.01" style="width:90px" />
+              <button>Додати</button>
+            </form>`;
+          container.appendChild(div);
+
+          const form = div.querySelector('.addItem');
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = form.dataset.id;
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+            payload.quantity = Number(payload.quantity);
+            payload.price = Number(payload.price);
+            await fetch(`/api/lists/${id}/items`, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+            await loadListItems(id);
+          });
+
+          loadListItems(l.id);
+        }
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      async function loadListItems(listId) {
+        const res = await fetch(`/api/lists/${listId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById(`items-${listId}`);
+        const totalEl = document.getElementById(`total-${listId}`);
+        const progressEl = document.getElementById(`progress-${listId}`);
+        container.innerHTML = '';
+        for (const item of data.items) {
+          const subtotal = (item.quantity * (item.price ?? 0));
+          const div = document.createElement('div');
+          div.className = 'item' + (item.status === 'PURCHASED' ? ' purchased' : '');
+          div.innerHTML = `<span>${escapeHtml(item.name)} x${item.quantity} — $${subtotal.toFixed(2)}</span>`;
+          const right = document.createElement('div');
+          const buy = document.createElement('button');
+          buy.textContent = 'Позначити купленим';
+          buy.onclick = async () => { await fetch(`/api/lists/${listId}/items/${item.id}/purchase`, { method: 'POST' }); loadListItems(listId); };
+          const remove = document.createElement('button');
+          remove.textContent = 'Видалити';
+          remove.onclick = async () => { await fetch(`/api/lists/${listId}/items/${item.id}`, { method: 'DELETE' }); loadListItems(listId); };
+          right.appendChild(buy);
+          right.appendChild(remove);
+          div.appendChild(right);
+          container.appendChild(div);
+        }
+
+        totalEl.textContent = (data.total ?? 0).toFixed(2);
+        progressEl.textContent = `${Math.round((data.progress ?? 0) * 100)}%`;
+      }
+
+      document.getElementById('createList').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('title').value;
+        const owner = document.getElementById('owner').value;
+        await fetch('/api/lists', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ title, owner }) });
+        document.getElementById('title').value = '';
+        document.getElementById('owner').value = '';
+        fetchLists();
+      });
+
+      fetchLists();
+    </script>
+  </body>
+</html>

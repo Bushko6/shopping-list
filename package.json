@@ -5,12 +5,15 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/server.js",
     "test": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "lint": "eslint src tests",
-    "build": "node --check src/index.js"
+    "build": "node --check src/index.js src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   },
   "keywords": [
     "shopping-list",
@@ -26,6 +29,7 @@
     "@eslint/js": "^9.29.0",
     "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9.29.0",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "supertest": "^6.3.3"
   }
 }
