@@ -33,8 +33,13 @@ jobs:
       - name: Test and coverage reports
         run: npm test
 
+      - name: Require SONAR_TOKEN for Sonar scan
+        if: ${{ env.SONAR_TOKEN == '' }}
+        run: |
+          echo "SONAR_TOKEN is not configured. Set the repository secret SONAR_TOKEN in GitHub."
+          exit 1
+
       - name: SonarQube scan
-        if: env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ env.SONAR_TOKEN }}

@@ -61,6 +61,8 @@ GitHub Actions pipeline виконує:
 
 Для SonarCloud потрібно додати repository secret `SONAR_TOKEN` і налаштувати project key `SEGTSW_yev-asd`.
 
+> У репозиторії налаштовано перевірку, яка не дозволить pipeline успішно пройти без `SONAR_TOKEN`. Це гарантує, що зелена галочка означатиме виконання Sonar скану.
+
 ## UML
 
 - [Use Case Diagram](docs/diagrams/use-case.mmd)
